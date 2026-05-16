@@ -1,11 +1,13 @@
 package com.aksharadeeptutor.ui.quiz
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -49,6 +51,7 @@ class QuizFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.textViewChapterName.text = args.chapterName
         loadQuestions()
         setupClickListeners()
     }
@@ -71,7 +74,7 @@ class QuizFragment : Fragment() {
 
     private fun displayQuestion() {
         val question = questions[currentQuestionIndex]
-        binding.textViewQuestionNumber.text = "Question ${currentQuestionIndex + 1}/${questions.size}"
+        binding.textViewQuestionNumber.text = "Question ${currentQuestionIndex + 1} of ${questions.size}"
         binding.textViewQuestionText.text = question.questionText
         binding.buttonOptionA.text = question.optionA
         binding.buttonOptionB.text = question.optionB
@@ -81,10 +84,10 @@ class QuizFragment : Fragment() {
         clearSelections()
         selectedAnswers[currentQuestionIndex]?.let { selectedOption ->
             when (selectedOption) {
-                question.optionA -> binding.buttonOptionA.isSelected = true
-                question.optionB -> binding.buttonOptionB.isSelected = true
-                question.optionC -> binding.buttonOptionC.isSelected = true
-                question.optionD -> binding.buttonOptionD.isSelected = true
+                question.optionA -> selectButton(binding.buttonOptionA, true)
+                question.optionB -> selectButton(binding.buttonOptionB, true)
+                question.optionC -> selectButton(binding.buttonOptionC, true)
+                question.optionD -> selectButton(binding.buttonOptionD, true)
             }
         }
 
@@ -93,27 +96,31 @@ class QuizFragment : Fragment() {
     }
 
     private fun clearSelections() {
-        binding.buttonOptionA.isSelected = false
-        binding.buttonOptionB.isSelected = false
-        binding.buttonOptionC.isSelected = false
-        binding.buttonOptionD.isSelected = false
+        resetButton(binding.buttonOptionA)
+        resetButton(binding.buttonOptionB)
+        resetButton(binding.buttonOptionC)
+        resetButton(binding.buttonOptionD)
+    }
+
+    private fun selectButton(button: com.google.android.material.button.MaterialButton, selected: Boolean) {
+        if (selected) {
+            button.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.primaryContainer)
+            button.strokeColor = ContextCompat.getColorStateList(requireContext(), R.color.primary)
+            button.setTextColor(ContextCompat.getColor(requireContext(), R.color.onPrimaryContainer))
+        }
+    }
+
+    private fun resetButton(button: com.google.android.material.button.MaterialButton) {
+        button.backgroundTintList = ContextCompat.getColorStateList(requireContext(), android.R.color.transparent)
+        button.strokeColor = ContextCompat.getColorStateList(requireContext(), R.color.outline)
+        button.setTextColor(ContextCompat.getColor(requireContext(), R.color.onSurface))
     }
 
     private fun setupClickListeners() {
-        val question = questions.getOrNull(currentQuestionIndex) ?: return
-
-        binding.buttonOptionA.setOnClickListener {
-            selectOption(question.optionA)
-        }
-        binding.buttonOptionB.setOnClickListener {
-            selectOption(question.optionB)
-        }
-        binding.buttonOptionC.setOnClickListener {
-            selectOption(question.optionC)
-        }
-        binding.buttonOptionD.setOnClickListener {
-            selectOption(question.optionD)
-        }
+        binding.buttonOptionA.setOnClickListener { selectOption(questions[currentQuestionIndex].optionA) }
+        binding.buttonOptionB.setOnClickListener { selectOption(questions[currentQuestionIndex].optionB) }
+        binding.buttonOptionC.setOnClickListener { selectOption(questions[currentQuestionIndex].optionC) }
+        binding.buttonOptionD.setOnClickListener { selectOption(questions[currentQuestionIndex].optionD) }
 
         binding.buttonNext.setOnClickListener {
             if (currentQuestionIndex < questions.size - 1) {
@@ -137,10 +144,10 @@ class QuizFragment : Fragment() {
         clearSelections()
         val question = questions[currentQuestionIndex]
         when (option) {
-            question.optionA -> binding.buttonOptionA.isSelected = true
-            question.optionB -> binding.buttonOptionB.isSelected = true
-            question.optionC -> binding.buttonOptionC.isSelected = true
-            question.optionD -> binding.buttonOptionD.isSelected = true
+            question.optionA -> selectButton(binding.buttonOptionA, true)
+            question.optionB -> selectButton(binding.buttonOptionB, true)
+            question.optionC -> selectButton(binding.buttonOptionC, true)
+            question.optionD -> selectButton(binding.buttonOptionD, true)
         }
     }
 

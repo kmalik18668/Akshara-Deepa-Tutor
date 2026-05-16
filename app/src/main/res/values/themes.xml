@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.AksharaDeepaTutor" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">#1976D2</item>
-        <item name="colorPrimaryDark">#1565C0</item>
-        <item name="colorAccent">#FF9800</item>
-        <item name="android:statusBarColor">#1565C0</item>
+    <style name="Theme.AksharaDeepaTutor" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#2563EB</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#DBEAFE</item>
+        <item name="colorOnPrimaryContainer">#1E40AF</item>
+        <item name="colorSecondary">#7C3AED</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSecondaryContainer">#EDE9FE</item>
+        <item name="colorOnSecondaryContainer">#5B21B6</item>
+        <item name="colorTertiary">#059669</item>
+        <item name="colorOnTertiary">#FFFFFF</item>
+        <item name="colorTertiaryContainer">#D1FAE5</item>
+        <item name="colorOnTertiaryContainer">#065F46</item>
+        <item name="colorError">#DC2626</item>
+        <item name="colorOnError">#FFFFFF</item>
+        <item name="colorSurface">#FAFBFC</item>
+        <item name="colorOnSurface">#111827</item>
+        <item name="colorSurfaceVariant">#F3F4F6</item>
+        <item name="colorOnSurfaceVariant">#6B7280</item>
+        <item name="colorOutline">#E5E7EB</item>
+        <item name="android:statusBarColor">#2563EB</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#FFFFFF</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 </resources>

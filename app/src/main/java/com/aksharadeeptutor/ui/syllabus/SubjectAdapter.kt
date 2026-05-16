@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.aksharadeeptutor.R
 import com.aksharadeeptutor.data.model.Subject
 import com.aksharadeeptutor.databinding.ItemSubjectBinding
 
@@ -38,6 +39,17 @@ class SubjectAdapter(
 
         fun bind(subject: Subject) {
             binding.textViewSubjectName.text = subject.name
+            binding.textViewChapterCount.text = "15 ${binding.root.context.getString(R.string.chapters)} • ${binding.root.context.getString(R.string.tap_to_start)}"
+            binding.progressBarSubject.progress = subject.progress
+            binding.progressBarSubject.max = 100
+
+            val iconRes = when (subject.id) {
+                1 -> R.drawable.ic_science
+                2 -> R.drawable.ic_math
+                3 -> R.drawable.ic_social
+                else -> R.drawable.ic_science
+            }
+            binding.imageViewSubjectIcon.setImageResource(iconRes)
         }
     }
 

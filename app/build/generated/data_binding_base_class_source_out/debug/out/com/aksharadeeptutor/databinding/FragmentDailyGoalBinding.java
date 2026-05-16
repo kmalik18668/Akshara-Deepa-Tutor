@@ -4,25 +4,25 @@ package com.aksharadeeptutor.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.aksharadeeptutor.R;
+import com.google.android.material.button.MaterialButton;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
 
 public final class FragmentDailyGoalBinding implements ViewBinding {
   @NonNull
-  private final ScrollView rootView;
+  private final LinearLayout rootView;
 
   @NonNull
-  public final Button buttonSetReminder;
+  public final MaterialButton buttonSetReminder;
 
   @NonNull
   public final ProgressBar progressBarOverall;
@@ -39,10 +39,10 @@ public final class FragmentDailyGoalBinding implements ViewBinding {
   @NonNull
   public final TextView textViewStreak;
 
-  private FragmentDailyGoalBinding(@NonNull ScrollView rootView, @NonNull Button buttonSetReminder,
-      @NonNull ProgressBar progressBarOverall, @NonNull TextView textViewGoalStatus,
-      @NonNull TextView textViewProgressText, @NonNull TextView textViewReminderStatus,
-      @NonNull TextView textViewStreak) {
+  private FragmentDailyGoalBinding(@NonNull LinearLayout rootView,
+      @NonNull MaterialButton buttonSetReminder, @NonNull ProgressBar progressBarOverall,
+      @NonNull TextView textViewGoalStatus, @NonNull TextView textViewProgressText,
+      @NonNull TextView textViewReminderStatus, @NonNull TextView textViewStreak) {
     this.rootView = rootView;
     this.buttonSetReminder = buttonSetReminder;
     this.progressBarOverall = progressBarOverall;
@@ -54,7 +54,7 @@ public final class FragmentDailyGoalBinding implements ViewBinding {
 
   @Override
   @NonNull
-  public ScrollView getRoot() {
+  public LinearLayout getRoot() {
     return rootView;
   }
 
@@ -80,7 +80,7 @@ public final class FragmentDailyGoalBinding implements ViewBinding {
     int id;
     missingId: {
       id = R.id.buttonSetReminder;
-      Button buttonSetReminder = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton buttonSetReminder = ViewBindings.findChildViewById(rootView, id);
       if (buttonSetReminder == null) {
         break missingId;
       }
@@ -115,7 +115,7 @@ public final class FragmentDailyGoalBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentDailyGoalBinding((ScrollView) rootView, buttonSetReminder,
+      return new FragmentDailyGoalBinding((LinearLayout) rootView, buttonSetReminder,
           progressBarOverall, textViewGoalStatus, textViewProgressText, textViewReminderStatus,
           textViewStreak);
     }

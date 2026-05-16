@@ -10,7 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface SubjectDao {
     @Query("SELECT * FROM subjects")
-    fun getAllSubjects(): Flow<List<Subject>>
+    fun getAllSubjectsFlow(): Flow<List<Subject>>
+
+    @Query("SELECT * FROM subjects")
+    suspend fun getAllSubjects(): List<Subject>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSubjects(subjects: List<Subject>)

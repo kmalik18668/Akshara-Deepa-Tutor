@@ -4,7 +4,6 @@ package com.aksharadeeptutor.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -12,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.aksharadeeptutor.R;
+import com.google.android.material.button.MaterialButton;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -21,22 +21,25 @@ public final class FragmentQuizBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
-  public final Button buttonNext;
+  public final MaterialButton buttonNext;
 
   @NonNull
-  public final Button buttonOptionA;
+  public final MaterialButton buttonOptionA;
 
   @NonNull
-  public final Button buttonOptionB;
+  public final MaterialButton buttonOptionB;
 
   @NonNull
-  public final Button buttonOptionC;
+  public final MaterialButton buttonOptionC;
 
   @NonNull
-  public final Button buttonOptionD;
+  public final MaterialButton buttonOptionD;
 
   @NonNull
-  public final Button buttonPrevious;
+  public final MaterialButton buttonPrevious;
+
+  @NonNull
+  public final TextView textViewChapterName;
 
   @NonNull
   public final TextView textViewQuestionNumber;
@@ -47,9 +50,10 @@ public final class FragmentQuizBinding implements ViewBinding {
   @NonNull
   public final TextView textViewTimer;
 
-  private FragmentQuizBinding(@NonNull LinearLayout rootView, @NonNull Button buttonNext,
-      @NonNull Button buttonOptionA, @NonNull Button buttonOptionB, @NonNull Button buttonOptionC,
-      @NonNull Button buttonOptionD, @NonNull Button buttonPrevious,
+  private FragmentQuizBinding(@NonNull LinearLayout rootView, @NonNull MaterialButton buttonNext,
+      @NonNull MaterialButton buttonOptionA, @NonNull MaterialButton buttonOptionB,
+      @NonNull MaterialButton buttonOptionC, @NonNull MaterialButton buttonOptionD,
+      @NonNull MaterialButton buttonPrevious, @NonNull TextView textViewChapterName,
       @NonNull TextView textViewQuestionNumber, @NonNull TextView textViewQuestionText,
       @NonNull TextView textViewTimer) {
     this.rootView = rootView;
@@ -59,6 +63,7 @@ public final class FragmentQuizBinding implements ViewBinding {
     this.buttonOptionC = buttonOptionC;
     this.buttonOptionD = buttonOptionD;
     this.buttonPrevious = buttonPrevious;
+    this.textViewChapterName = textViewChapterName;
     this.textViewQuestionNumber = textViewQuestionNumber;
     this.textViewQuestionText = textViewQuestionText;
     this.textViewTimer = textViewTimer;
@@ -92,38 +97,44 @@ public final class FragmentQuizBinding implements ViewBinding {
     int id;
     missingId: {
       id = R.id.buttonNext;
-      Button buttonNext = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton buttonNext = ViewBindings.findChildViewById(rootView, id);
       if (buttonNext == null) {
         break missingId;
       }
 
       id = R.id.buttonOptionA;
-      Button buttonOptionA = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton buttonOptionA = ViewBindings.findChildViewById(rootView, id);
       if (buttonOptionA == null) {
         break missingId;
       }
 
       id = R.id.buttonOptionB;
-      Button buttonOptionB = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton buttonOptionB = ViewBindings.findChildViewById(rootView, id);
       if (buttonOptionB == null) {
         break missingId;
       }
 
       id = R.id.buttonOptionC;
-      Button buttonOptionC = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton buttonOptionC = ViewBindings.findChildViewById(rootView, id);
       if (buttonOptionC == null) {
         break missingId;
       }
 
       id = R.id.buttonOptionD;
-      Button buttonOptionD = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton buttonOptionD = ViewBindings.findChildViewById(rootView, id);
       if (buttonOptionD == null) {
         break missingId;
       }
 
       id = R.id.buttonPrevious;
-      Button buttonPrevious = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton buttonPrevious = ViewBindings.findChildViewById(rootView, id);
       if (buttonPrevious == null) {
+        break missingId;
+      }
+
+      id = R.id.textViewChapterName;
+      TextView textViewChapterName = ViewBindings.findChildViewById(rootView, id);
+      if (textViewChapterName == null) {
         break missingId;
       }
 
@@ -146,8 +157,8 @@ public final class FragmentQuizBinding implements ViewBinding {
       }
 
       return new FragmentQuizBinding((LinearLayout) rootView, buttonNext, buttonOptionA,
-          buttonOptionB, buttonOptionC, buttonOptionD, buttonPrevious, textViewQuestionNumber,
-          textViewQuestionText, textViewTimer);
+          buttonOptionB, buttonOptionC, buttonOptionD, buttonPrevious, textViewChapterName,
+          textViewQuestionNumber, textViewQuestionText, textViewTimer);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

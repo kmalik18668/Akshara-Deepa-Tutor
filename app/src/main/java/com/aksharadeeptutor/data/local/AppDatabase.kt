@@ -12,7 +12,6 @@ import com.aksharadeeptutor.data.model.QuizAttempt
 import com.aksharadeeptutor.data.model.Subject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @Database(
@@ -37,7 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "akshara_deeptutor_database"
                 )
-                    .addCallback(AppDatabaseCallback(context))
+                    .addCallback(AppDatabaseCallback())
                     .build()
                 INSTANCE = instance
                 instance
@@ -45,15 +44,12 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 
-    private class AppDatabaseCallback(
-        private val context: Context
-    ) : RoomDatabase.Callback() {
+    private class AppDatabaseCallback : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            INSTANCE?.let { database ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    populateDatabase(database)
-                }
+            CoroutineScope(Dispatchers.IO).launch {
+                val database = INSTANCE ?: return@launch
+                populateDatabase(database)
             }
         }
 
@@ -62,11 +58,12 @@ abstract class AppDatabase : RoomDatabase() {
             val chapterDao = database.chapterDao()
             val questionDao = database.questionDao()
 
-            if (subjectDao.getAllSubjects().first().isEmpty()) {
+            val existingSubjects = subjectDao.getAllSubjects()
+            if (existingSubjects.isEmpty()) {
                 val subjects = listOf(
-                    Subject(1, "Science", 0),
-                    Subject(2, "Mathematics", 0),
-                    Subject(3, "Social Studies", 0)
+                    Subject(1, "Science", 0, 0),
+                    Subject(2, "Mathematics", 0, 0),
+                    Subject(3, "Social Studies", 0, 0)
                 )
                 subjectDao.insertSubjects(subjects)
 
@@ -128,7 +125,7 @@ abstract class AppDatabase : RoomDatabase() {
                     Question(4, 1, "Rusting of iron is an example of:", "Reduction", "Oxidation", "Sublimation", "Evaporation", "Oxidation", "Rusting involves oxidation of iron in the presence of moisture and oxygen."),
                     Question(5, 1, "Which of the following is a decomposition reaction?", "CaCO₃ → CaO + CO₂", "H₂ + Cl₂ → 2HCl", "Zn + CuSO₄ → ZnSO₄ + Cu", "AgNO₃ + NaCl → AgCl + NaNO₃", "CaCO₃ → CaO + CO₂", "A single compound breaks down into two or more simpler substances."),
 
-                    Question(6, 2, "What is the pH of a neutral solution?", "0", "7", "14", "1", "7", "A neutral solution has equal concentrations of H⁺ and OH⁻ ions, giving pH = 7."),
+                    Question(6, 2, "What is the pH of a neutral solution?", "0", "7", "14", "1", "7", "A neutral solution has equal concentrations of H⁺ and OH ions, giving pH = 7."),
                     Question(7, 2, "Which acid is present in vinegar?", "Citric Acid", "Acetic Acid", "Hydrochloric Acid", "Sulphuric Acid", "Acetic Acid", "Vinegar contains dilute acetic acid (CH₃COOH)."),
                     Question(8, 2, "Bases turn red litmus paper to which color?", "Blue", "Green", "Yellow", "No change", "Blue", "Bases are alkaline and turn red litmus paper blue."),
                     Question(9, 2, "What is the chemical formula of baking soda?", "Na₂CO₃", "NaHCO₃", "NaOH", "NaCl", "NaHCO₃", "Baking soda is sodium hydrogen carbonate (NaHCO₃)."),

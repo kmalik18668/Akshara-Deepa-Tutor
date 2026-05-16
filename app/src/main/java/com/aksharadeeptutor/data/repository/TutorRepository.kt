@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 class TutorRepository(private val db: AppDatabase) {
 
-    val subjects: Flow<List<Subject>> = db.subjectDao().getAllSubjects()
+    val subjects: Flow<List<Subject>> = db.subjectDao().getAllSubjectsFlow()
 
     fun getChaptersBySubject(subjectId: Int): Flow<List<Chapter>> =
         db.chapterDao().getChaptersBySubject(subjectId)

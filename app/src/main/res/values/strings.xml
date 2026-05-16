@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Akshara-Deepa Tutor</string>
+    <string name="app_name">Akshara-Deepa</string>
     <string name="syllabus_tracker">Syllabus Tracker</string>
     <string name="quiz_mode">Quiz Mode</string>
     <string name="strength_map">Strength Map</string>
-    <string name="daily_goal">Daily Goal</string>
+    <string name="daily_goal">Daily Goals</string>
     <string name="start_quiz">Start Quiz</string>
     <string name="review_answers">Review Answers</string>
     <string name="next">Next</string>
@@ -23,4 +23,13 @@
     <string name="daily_reminder">Complete at least one topic today!</string>
     <string name="streak">Current Streak</string>
     <string name="days">days</string>
+    <string name="science">Science</string>
+    <string name="mathematics">Mathematics</string>
+    <string name="social_studies">Social Studies</string>
+    <string name="chapters">chapters</string>
+    <string name="tap_to_start">Tap to explore chapters</string>
+    <string name="mastery_level">Mastery Level</string>
+    <string name="set_reminder">Set Daily Reminder</string>
+    <string name="reminder_set">Reminder set for 6:00 PM daily</string>
+    <string name="no_reminder">No reminder set</string>
 </resources>

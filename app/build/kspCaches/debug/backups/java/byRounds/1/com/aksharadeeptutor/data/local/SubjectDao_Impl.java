@@ -35,7 +35,7 @@ public final class SubjectDao_Impl implements SubjectDao {
     this.__insertionAdapterOfSubject = new EntityInsertionAdapter<Subject>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR REPLACE INTO `subjects` (`id`,`name`,`icon`) VALUES (?,?,?)";
+        return "INSERT OR REPLACE INTO `subjects` (`id`,`name`,`icon`,`progress`) VALUES (?,?,?,?)";
       }
 
       @Override
@@ -47,6 +47,7 @@ public final class SubjectDao_Impl implements SubjectDao {
           stmt.bindString(2, value.getName());
         }
         stmt.bindLong(3, value.getIcon());
+        stmt.bindLong(4, value.getProgress());
       }
     };
   }
@@ -70,7 +71,7 @@ public final class SubjectDao_Impl implements SubjectDao {
   }
 
   @Override
-  public Flow<List<Subject>> getAllSubjects() {
+  public Flow<List<Subject>> getAllSubjectsFlow() {
     final String _sql = "SELECT * FROM subjects";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return CoroutinesRoom.createFlow(__db, false, new String[]{"subjects"}, new Callable<List<Subject>>() {
@@ -81,6 +82,7 @@ public final class SubjectDao_Impl implements SubjectDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
           final int _cursorIndexOfIcon = CursorUtil.getColumnIndexOrThrow(_cursor, "icon");
+          final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
           final List<Subject> _result = new ArrayList<Subject>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final Subject _item;
@@ -94,7 +96,9 @@ public final class SubjectDao_Impl implements SubjectDao {
             }
             final int _tmpIcon;
             _tmpIcon = _cursor.getInt(_cursorIndexOfIcon);
-            _item = new Subject(_tmpId,_tmpName,_tmpIcon);
+            final int _tmpProgress;
+            _tmpProgress = _cursor.getInt(_cursorIndexOfProgress);
+            _item = new Subject(_tmpId,_tmpName,_tmpIcon,_tmpProgress);
             _result.add(_item);
           }
           return _result;
@@ -108,6 +112,47 @@ public final class SubjectDao_Impl implements SubjectDao {
         _statement.release();
       }
     });
+  }
+
+  @Override
+  public Object getAllSubjects(final Continuation<? super List<Subject>> continuation) {
+    final String _sql = "SELECT * FROM subjects";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
+    return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<List<Subject>>() {
+      @Override
+      public List<Subject> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
+          final int _cursorIndexOfIcon = CursorUtil.getColumnIndexOrThrow(_cursor, "icon");
+          final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
+          final List<Subject> _result = new ArrayList<Subject>(_cursor.getCount());
+          while(_cursor.moveToNext()) {
+            final Subject _item;
+            final int _tmpId;
+            _tmpId = _cursor.getInt(_cursorIndexOfId);
+            final String _tmpName;
+            if (_cursor.isNull(_cursorIndexOfName)) {
+              _tmpName = null;
+            } else {
+              _tmpName = _cursor.getString(_cursorIndexOfName);
+            }
+            final int _tmpIcon;
+            _tmpIcon = _cursor.getInt(_cursorIndexOfIcon);
+            final int _tmpProgress;
+            _tmpProgress = _cursor.getInt(_cursorIndexOfProgress);
+            _item = new Subject(_tmpId,_tmpName,_tmpIcon,_tmpProgress);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+          _statement.release();
+        }
+      }
+    }, continuation);
   }
 
   @Override
@@ -126,6 +171,7 @@ public final class SubjectDao_Impl implements SubjectDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
           final int _cursorIndexOfIcon = CursorUtil.getColumnIndexOrThrow(_cursor, "icon");
+          final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
           final Subject _result;
           if(_cursor.moveToFirst()) {
             final int _tmpId;
@@ -138,7 +184,9 @@ public final class SubjectDao_Impl implements SubjectDao {
             }
             final int _tmpIcon;
             _tmpIcon = _cursor.getInt(_cursorIndexOfIcon);
-            _result = new Subject(_tmpId,_tmpName,_tmpIcon);
+            final int _tmpProgress;
+            _tmpProgress = _cursor.getInt(_cursorIndexOfProgress);
+            _result = new Subject(_tmpId,_tmpName,_tmpIcon,_tmpProgress);
           } else {
             _result = null;
           }

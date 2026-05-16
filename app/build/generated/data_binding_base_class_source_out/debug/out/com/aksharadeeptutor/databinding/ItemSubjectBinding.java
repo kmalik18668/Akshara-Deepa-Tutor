@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,16 +25,20 @@ public final class ItemSubjectBinding implements ViewBinding {
   public final ImageView imageViewSubjectIcon;
 
   @NonNull
+  public final ProgressBar progressBarSubject;
+
+  @NonNull
   public final TextView textViewChapterCount;
 
   @NonNull
   public final TextView textViewSubjectName;
 
   private ItemSubjectBinding(@NonNull MaterialCardView rootView,
-      @NonNull ImageView imageViewSubjectIcon, @NonNull TextView textViewChapterCount,
-      @NonNull TextView textViewSubjectName) {
+      @NonNull ImageView imageViewSubjectIcon, @NonNull ProgressBar progressBarSubject,
+      @NonNull TextView textViewChapterCount, @NonNull TextView textViewSubjectName) {
     this.rootView = rootView;
     this.imageViewSubjectIcon = imageViewSubjectIcon;
+    this.progressBarSubject = progressBarSubject;
     this.textViewChapterCount = textViewChapterCount;
     this.textViewSubjectName = textViewSubjectName;
   }
@@ -71,6 +76,12 @@ public final class ItemSubjectBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.progressBarSubject;
+      ProgressBar progressBarSubject = ViewBindings.findChildViewById(rootView, id);
+      if (progressBarSubject == null) {
+        break missingId;
+      }
+
       id = R.id.textViewChapterCount;
       TextView textViewChapterCount = ViewBindings.findChildViewById(rootView, id);
       if (textViewChapterCount == null) {
@@ -84,7 +95,7 @@ public final class ItemSubjectBinding implements ViewBinding {
       }
 
       return new ItemSubjectBinding((MaterialCardView) rootView, imageViewSubjectIcon,
-          textViewChapterCount, textViewSubjectName);
+          progressBarSubject, textViewChapterCount, textViewSubjectName);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

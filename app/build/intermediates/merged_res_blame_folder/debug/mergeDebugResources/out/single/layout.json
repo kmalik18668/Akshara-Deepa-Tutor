@@ -4,24 +4,40 @@
         "source": "com.aksharadeeptutor.app-main-58:/layout/fragment_daily_goal.xml"
     },
     {
+        "merged": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-mergeDebugResources-55:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-main-58:\\layout\\activity_main.xml"
+    },
+    {
         "merged": "com.aksharadeeptutor.app-mergeDebugResources-55:/layout/fragment_quiz.xml",
         "source": "com.aksharadeeptutor.app-main-58:/layout/fragment_quiz.xml"
     },
     {
-        "merged": "com.aksharadeeptutor.app-mergeDebugResources-55:/layout/activity_main.xml",
-        "source": "com.aksharadeeptutor.app-main-58:/layout/activity_main.xml"
+        "merged": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-mergeDebugResources-55:\\layout\\item_subject.xml",
+        "source": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-main-58:\\layout\\item_subject.xml"
     },
     {
-        "merged": "com.aksharadeeptutor.app-mergeDebugResources-55:/layout/item_subject.xml",
-        "source": "com.aksharadeeptutor.app-main-58:/layout/item_subject.xml"
+        "merged": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-mergeDebugResources-55:\\layout\\fragment_quiz.xml",
+        "source": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-main-58:\\layout\\fragment_quiz.xml"
+    },
+    {
+        "merged": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-mergeDebugResources-55:\\layout\\fragment_syllabus.xml",
+        "source": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-main-58:\\layout\\fragment_syllabus.xml"
+    },
+    {
+        "merged": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-mergeDebugResources-55:\\layout\\fragment_daily_goal.xml",
+        "source": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-main-58:\\layout\\fragment_daily_goal.xml"
     },
     {
         "merged": "com.aksharadeeptutor.app-mergeDebugResources-55:/layout/fragment_syllabus.xml",
         "source": "com.aksharadeeptutor.app-main-58:/layout/fragment_syllabus.xml"
     },
     {
-        "merged": "com.aksharadeeptutor.app-mergeDebugResources-55:/layout/item_chapter.xml",
-        "source": "com.aksharadeeptutor.app-main-58:/layout/item_chapter.xml"
+        "merged": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-mergeDebugResources-55:\\layout\\item_chapter.xml",
+        "source": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-main-58:\\layout\\item_chapter.xml"
+    },
+    {
+        "merged": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-mergeDebugResources-55:\\layout\\fragment_strength_map.xml",
+        "source": "C:\\Users\\kashif\\.gradle\\daemon\\8.4\\com.aksharadeeptutor.app-main-58:\\layout\\fragment_strength_map.xml"
     },
     {
         "merged": "com.aksharadeeptutor.app-mergeDebugResources-55:/layout/fragment_strength_map.xml",

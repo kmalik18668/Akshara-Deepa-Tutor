@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class Subject(
     @PrimaryKey val id: Int,
     val name: String,
-    val icon: Int
+    val icon: Int = 0,
+    val progress: Int = 0
 )
