@@ -2,10 +2,13 @@ package com.aksharadeeptutor
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.aksharadeeptutor.data.local.AppDatabase
+import com.aksharadeeptutor.data.local.DatabaseInitializer
 import com.aksharadeeptutor.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +21,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         database = AppDatabase.getDatabase(this)
+
+        lifecycleScope.launch {
+            DatabaseInitializer.populateIfEmpty(database)
+        }
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
