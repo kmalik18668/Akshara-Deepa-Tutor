@@ -46,8 +46,11 @@ class SyllabusFragment : Fragment() {
 
     private fun setupRecyclerView() {
         subjectAdapter = SubjectAdapter { subject ->
-            viewModel.selectSubject(subject.id)
-            showChaptersForSubject(subject.id)
+            val bundle = android.os.Bundle().apply {
+                putInt("chapterId", subject.id)
+                putString("chapterName", subject.name)
+            }
+            findNavController().navigate(R.id.action_syllabus_to_quiz, bundle)
         }
         binding.recyclerViewSubjects.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -61,11 +64,6 @@ class SyllabusFragment : Fragment() {
                 subjectAdapter.submitList(subjects)
             }
         }
-    }
-
-    private fun showChaptersForSubject(subjectId: Int) {
-        val action = SyllabusFragmentDirections.actionSyllabusToQuiz(subjectId, 0, "")
-        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

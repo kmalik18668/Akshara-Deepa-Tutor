@@ -8,9 +8,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.aksharadeeptutor.data.model.Chapter
 import com.aksharadeeptutor.data.model.ChapterStatus
 import com.aksharadeeptutor.data.model.Question
+import com.aksharadeeptutor.data.model.QuizAttempt
 import com.aksharadeeptutor.data.model.Subject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @Database(
@@ -60,7 +62,7 @@ abstract class AppDatabase : RoomDatabase() {
             val chapterDao = database.chapterDao()
             val questionDao = database.questionDao()
 
-            if (subjectDao.getAllSubjects().value.isNullOrEmpty()) {
+            if (subjectDao.getAllSubjects().first().isEmpty()) {
                 val subjects = listOf(
                     Subject(1, "Science", 0),
                     Subject(2, "Mathematics", 0),

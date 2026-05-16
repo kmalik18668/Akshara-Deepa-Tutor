@@ -14,7 +14,7 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.AksharaDeepaTutor"
-        tools:targetApi="34">
+        tools:targetApi="33">
         <activity
             android:name=".MainActivity"
             android:exported="true"

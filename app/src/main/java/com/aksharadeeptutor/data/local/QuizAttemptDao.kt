@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.aksharadeeptutor.data.model.QuizAttempt
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuizAttemptDao {
@@ -12,10 +11,10 @@ interface QuizAttemptDao {
     suspend fun insertQuizAttempt(quizAttempt: QuizAttempt): Long
 
     @Query("SELECT * FROM quiz_attempts WHERE chapterId = :chapterId ORDER BY timestamp DESC")
-    fun getAttemptsByChapter(chapterId: Int): Flow<List<QuizAttempt>>
+    suspend fun getAttemptsByChapter(chapterId: Int): List<QuizAttempt>
 
     @Query("SELECT * FROM quiz_attempts ORDER BY timestamp DESC")
-    fun getAllAttempts(): Flow<List<QuizAttempt>>
+    suspend fun getAllAttempts(): List<QuizAttempt>
 
     @Query("SELECT MAX(score * 1.0 / totalQuestions) FROM quiz_attempts WHERE chapterId = :chapterId")
     suspend fun getBestScoreForChapter(chapterId: Int): Double?

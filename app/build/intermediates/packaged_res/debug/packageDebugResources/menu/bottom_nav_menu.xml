@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@id/syllabusFragment"
+        android:icon="@drawable/ic_syllabus"
+        android:title="Syllabus" />
+    <item
+        android:id="@id/strengthMapFragment"
+        android:icon="@drawable/ic_chart"
+        android:title="Strength Map" />
+    <item
+        android:id="@id/dailyGoalFragment"
+        android:icon="@drawable/ic_goal"
+        android:title="Daily Goal" />
+</menu>

@@ -48,7 +48,6 @@ class StrengthMapFragment : Fragment() {
         binding.radarChart.apply {
             description.isEnabled = false
             setTouchEnabled(true)
-            setDrawGridLines(true)
             webAlpha = 150
 
             val legend = legend
@@ -61,7 +60,6 @@ class StrengthMapFragment : Fragment() {
 
             xAxis.apply {
                 textSize = 14f
-                setDrawGridLines(false)
             }
 
             yAxis.apply {
@@ -95,7 +93,6 @@ class StrengthMapFragment : Fragment() {
             fillColor = Color.parseColor("#1976D2")
             fillAlpha = 100
             lineWidth = 2f
-            drawFilled = true
             valueTextSize = 12f
             valueTextColor = Color.parseColor("#212121")
             valueFormatter = object : ValueFormatter() {

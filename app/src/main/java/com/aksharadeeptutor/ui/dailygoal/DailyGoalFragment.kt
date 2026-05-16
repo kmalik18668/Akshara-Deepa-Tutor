@@ -14,9 +14,6 @@ import com.aksharadeeptutor.viewmodel.TutorViewModel
 import com.aksharadeeptutor.viewmodel.TutorViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class DailyGoalFragment : Fragment() {
 
@@ -54,15 +51,22 @@ class DailyGoalFragment : Fragment() {
                 for (subject in subjects) {
                     val completed = viewModel.getCompletedChaptersCount(subject.id)
                     val total = viewModel.getTotalChaptersCount(subject.id)
-                    totalCompleted += completed
-                    totalChapters += total
+
+                    completed.collectLatest { c ->
+                        totalCompleted = c
+                        val progressPercentage = if (totalChapters > 0) (totalCompleted * 100) / totalChapters else 0
+                        binding.progressBarOverall.progress = progressPercentage
+                        binding.textViewProgressText.text = "$totalCompleted/$totalChapters Chapters Completed"
+                    }
+
+                    total.collectLatest { t ->
+                        totalChapters = t
+                        val progressPercentage = if (totalChapters > 0) (totalCompleted * 100) / totalChapters else 0
+                        binding.progressBarOverall.progress = progressPercentage
+                        binding.textViewProgressText.text = "$totalCompleted/$totalChapters Chapters Completed"
+                    }
                 }
 
-                val progressPercentage = if (totalChapters > 0) (totalCompleted * 100) / totalChapters else 0
-                binding.progressBarOverall.progress = progressPercentage
-                binding.textViewProgressText.text = "$totalCompleted/$totalChapters Chapters Completed"
-
-                val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
                 val goalCompleted = totalCompleted > 0
                 binding.textViewGoalStatus.text = if (goalCompleted) {
                     "Today's Goal: Completed!"

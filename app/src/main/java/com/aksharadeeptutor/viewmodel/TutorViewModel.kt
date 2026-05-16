@@ -25,6 +25,12 @@ class TutorViewModel(private val repository: TutorRepository) : ViewModel() {
     fun getChaptersForSubject(subjectId: Int): Flow<List<Chapter>> =
         repository.getChaptersBySubject(subjectId)
 
+    fun getCompletedChaptersCount(subjectId: Int): Flow<Int> =
+        repository.getCompletedChaptersCount(subjectId)
+
+    fun getTotalChaptersCount(subjectId: Int): Flow<Int> =
+        repository.getTotalChaptersCount(subjectId)
+
     fun getProgressData(subjectId: Int): Flow<ProgressData> = combine(
         repository.getCompletedChaptersCount(subjectId),
         repository.getTotalChaptersCount(subjectId)

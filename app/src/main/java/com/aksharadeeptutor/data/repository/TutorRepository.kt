@@ -36,5 +36,6 @@ class TutorRepository(private val db: AppDatabase) {
     suspend fun getAverageScoreForSubject(subjectId: Int): Double? =
         db.quizAttemptDao().getAverageScoreForSubject(subjectId)
 
-    fun getAllAttempts() = db.quizAttemptDao().getAllAttempts()
+    suspend fun getAllAttempts(): List<QuizAttempt> =
+        db.quizAttemptDao().getAllAttempts()
 }

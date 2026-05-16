@@ -1,0 +1,62 @@
+[
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/drawable_ic_launcher.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/drawable/ic_launcher.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/drawable_ic_goal.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/drawable/ic_goal.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/layout_item_chapter.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/layout/item_chapter.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/layout_fragment_quiz.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/layout/fragment_quiz.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/layout_activity_main.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/xml_data_extraction_rules.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/layout_fragment_daily_goal.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/layout/fragment_daily_goal.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/drawable_ic_chart.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/drawable/ic_chart.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/layout_fragment_syllabus.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/layout/fragment_syllabus.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/layout_item_subject.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/layout/item_subject.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/navigation_nav_graph.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/navigation/nav_graph.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/menu_bottom_nav_menu.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/menu/bottom_nav_menu.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/layout_fragment_strength_map.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/layout/fragment_strength_map.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/drawable_ic_syllabus.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/drawable/ic_syllabus.xml"
+    },
+    {
+        "merged": "com.aksharadeeptutor.app-debug-56:/xml_backup_rules.xml.flat",
+        "source": "com.aksharadeeptutor.app-main-58:/xml/backup_rules.xml"
+    }
+]
