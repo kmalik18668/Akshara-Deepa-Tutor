@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aksharadeeptutor.MainActivity
 import com.aksharadeeptutor.R
+import com.aksharadeeptutor.data.model.Chapter
+import com.aksharadeeptutor.data.model.ChapterStatus
 import com.aksharadeeptutor.databinding.FragmentSyllabusBinding
 import com.aksharadeeptutor.viewmodel.TutorViewModel
 import com.aksharadeeptutor.viewmodel.TutorViewModelFactory
@@ -28,6 +30,9 @@ class SyllabusFragment : Fragment() {
 
     private lateinit var subjectAdapter: SubjectAdapter
 
+    // Track which subjects are expanded
+    private val expandedSubjects = mutableSetOf<Int>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,29 +44,82 @@ class SyllabusFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupRecyclerView()
-        observeSubjects()
+        observeSyllabusState()
+        observeOverallProgress()
     }
 
     private fun setupRecyclerView() {
-        subjectAdapter = SubjectAdapter { subject ->
-            val bundle = android.os.Bundle().apply {
-                putInt("chapterId", subject.id)
-                putString("chapterName", subject.name)
+        subjectAdapter = SubjectAdapter(
+            onSubjectClick = { subject ->
+                toggleSubjectExpansion(subject.id)
+            },
+            onChapterQuiz = { chapter ->
+                val bundle = android.os.Bundle().apply {
+                    putInt("chapterId", chapter.id)
+                    putString("chapterName", chapter.name)
+                }
+                findNavController().navigate(R.id.action_syllabus_to_quiz, bundle)
+            },
+            onMarkComplete = { chapter ->
+                handleMarkComplete(chapter)
             }
-            findNavController().navigate(R.id.action_syllabus_to_quiz, bundle)
-        }
+        )
         binding.recyclerViewSubjects.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = subjectAdapter
         }
     }
 
-    private fun observeSubjects() {
+    private fun handleMarkComplete(chapter: Chapter) {
+        when (chapter.status) {
+            ChapterStatus.COMPLETED -> {
+                // Toggle off: mark as not started
+                viewModel.markChapterNotStarted(chapter.id)
+            }
+            else -> {
+                // Mark as completed
+                viewModel.markChapterComplete(chapter.id)
+            }
+        }
+    }
+
+    private fun toggleSubjectExpansion(subjectId: Int) {
+        if (expandedSubjects.contains(subjectId)) {
+            expandedSubjects.remove(subjectId)
+        } else {
+            expandedSubjects.add(subjectId)
+        }
+        // Trigger the adapter to re-render with updated expansion state
+        rebuildList()
+    }
+
+    private var currentUiModels: List<SubjectUiModel> = emptyList()
+
+    private fun observeSyllabusState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.subjects.collectLatest { subjects ->
-                subjectAdapter.submitList(subjects)
+            // Single combined flow — no nested collectors
+            viewModel.syllabusUiState.collectLatest { models ->
+                // Apply expansion state
+                currentUiModels = models
+                rebuildList()
+            }
+        }
+    }
+
+    private fun rebuildList() {
+        val withExpansion = currentUiModels.map { model ->
+            model.copy(isExpanded = expandedSubjects.contains(model.subject.id))
+        }
+        subjectAdapter.submitList(withExpansion)
+    }
+
+    private fun observeOverallProgress() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.totalProgressFlow.collectLatest { (completed, total) ->
+                val pct = if (total > 0) (completed * 100) / total else 0
+                binding.progressBarOverall.progress = pct
+                binding.textViewOverallProgress.text = "$completed of $total chapters completed ($pct%)"
             }
         }
     }

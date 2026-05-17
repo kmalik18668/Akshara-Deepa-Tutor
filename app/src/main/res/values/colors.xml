@@ -19,6 +19,7 @@
     <color name="surfaceVariant">#F3F4F6</color>
     <color name="onSurfaceVariant">#6B7280</color>
     <color name="outline">#E5E7EB</color>
+    <color name="outlineVariant">#D1D5DB</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="success">#10B981</color>
@@ -27,4 +28,9 @@
     <color name="cardBackground">#FFFFFF</color>
     <color name="navItemActive">#2563EB</color>
     <color name="navItemInactive">#9CA3AF</color>
+    
+    <!-- Status colors -->
+    <color name="colorCompleted">#10B981</color>
+    <color name="colorInProgress">#F59E0B</color>
+    <color name="colorNotStarted">#6B7280</color>
 </resources>

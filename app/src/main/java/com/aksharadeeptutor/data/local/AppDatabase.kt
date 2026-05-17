@@ -11,7 +11,7 @@ import com.aksharadeeptutor.data.model.Subject
 
 @Database(
     entities = [Subject::class, Chapter::class, Question::class, QuizAttempt::class],
-    version = 1,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

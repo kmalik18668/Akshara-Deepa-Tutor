@@ -1,82 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    app:cardBackgroundColor="@color/cardBackground"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
-    app:strokeColor="@color/outline"
-    app:strokeWidth="1dp">
+    android:orientation="vertical"
+    android:layout_marginBottom="12dp">
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_subject_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            app:cardBackgroundColor="@color/primaryContainer"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp">
-
-            <ImageView
-                android:id="@+id/imageViewSubjectIcon"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center"
-                android:contentDescription="Subject Icon"
-                android:src="@drawable/ic_science"
-                app:tint="@color/onPrimaryContainer" />
-
-        </com.google.android.material.card.MaterialCardView>
+        app:cardBackgroundColor="@color/cardBackground"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/outline"
+        app:strokeWidth="1dp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:padding="20dp">
 
-            <TextView
-                android:id="@+id/textViewSubjectName"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                app:cardBackgroundColor="@color/primaryContainer"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/imageViewSubjectIcon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Subject Icon"
+                    android:src="@drawable/ic_science"
+                    app:tint="@color/onPrimaryContainer" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/onSurface"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:letterSpacing="-0.01" />
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textViewChapterCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/onSurfaceVariant"
-                android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/textViewSubjectName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/onSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="-0.01" />
 
-            <ProgressBar
-                android:id="@+id/progressBarSubject"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="12dp"
-                android:progressTint="@color/primary"
-                android:progressBackgroundTint="@color/surfaceVariant" />
+                <TextView
+                    android:id="@+id/textViewChapterCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/onSurfaceVariant"
+                    android:textSize="14sp" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarSubject"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="12dp"
+                    android:progressTint="@color/primary"
+                    android:progressBackgroundTint="@color/surfaceVariant" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/image_expand_indicator"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="Expand"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/onSurfaceVariant" />
 
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="Navigate"
-            android:src="@drawable/ic_chevron_right"
-            app:tint="@color/onSurfaceVariant" />
+    </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_chapters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:visibility="gone" />
 
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>

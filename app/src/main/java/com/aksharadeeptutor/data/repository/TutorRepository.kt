@@ -38,4 +38,7 @@ class TutorRepository(private val db: AppDatabase) {
 
     suspend fun getAllAttempts(): List<QuizAttempt> =
         db.quizAttemptDao().getAllAttempts()
+
+    suspend fun getAllSubjects(): List<Subject> =
+        db.subjectDao().getAllSubjects()
 }

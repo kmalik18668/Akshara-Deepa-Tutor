@@ -1,12 +1,14 @@
 package com.aksharadeeptutor.ui.quiz
 
-import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -38,6 +40,8 @@ class QuizFragment : Fragment() {
     private var selectedAnswers = mutableMapOf<Int, String>()
     private var quizTimer: CountDownTimer? = null
     private var timeRemaining: Long = 300000
+    private val quizDuration: Long = 300000
+    private var isReviewMode = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +54,6 @@ class QuizFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.textViewChapterName.text = args.chapterName
         loadQuestions()
         setupClickListeners()
@@ -67,8 +70,51 @@ class QuizFragment : Fragment() {
             currentQuestionIndex = 0
             score = 0
             selectedAnswers.clear()
+            timeRemaining = quizDuration
+            isReviewMode = false
+            setupQuestionDots()
             displayQuestion()
             startTimer()
+        }
+    }
+
+    private fun setupQuestionDots() {
+        binding.questionDotsContainer.removeAllViews()
+        questions.forEachIndexed { index, _ ->
+            val dot = TextView(requireContext()).apply {
+                text = "${index + 1}"
+                textSize = 11f
+                setPadding(6, 4, 6, 4)
+                gravity = android.view.Gravity.CENTER
+                minWidth = 24
+                minHeight = 24
+                setBackgroundResource(R.drawable.dot_unanswered)
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.onSurfaceVariant))
+            }
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { marginEnd = 4 }
+            dot.layoutParams = params
+            binding.questionDotsContainer.addView(dot)
+        }
+        updateQuestionDots()
+    }
+
+    private fun updateQuestionDots() {
+        for (i in 0 until binding.questionDotsContainer.childCount) {
+            val dot = binding.questionDotsContainer.getChildAt(i) as TextView
+            val questionIndex = i
+            val isAnswered = selectedAnswers.containsKey(questionIndex)
+            val isCurrent = questionIndex == currentQuestionIndex
+
+            val bgRes = when {
+                isCurrent -> R.drawable.dot_current
+                isAnswered -> R.drawable.dot_answered
+                else -> R.drawable.dot_unanswered
+            }
+            dot.setBackgroundResource(bgRes)
+            dot.setTextColor(ContextCompat.getColor(requireContext(), if (isCurrent) R.color.white else R.color.onSurfaceVariant))
         }
     }
 
@@ -81,18 +127,70 @@ class QuizFragment : Fragment() {
         binding.buttonOptionC.text = question.optionC
         binding.buttonOptionD.text = question.optionD
 
+        binding.progressIndicator.progress = ((currentQuestionIndex + 1) * 100) / questions.size
+
         clearSelections()
-        selectedAnswers[currentQuestionIndex]?.let { selectedOption ->
-            when (selectedOption) {
-                question.optionA -> selectButton(binding.buttonOptionA, true)
-                question.optionB -> selectButton(binding.buttonOptionB, true)
-                question.optionC -> selectButton(binding.buttonOptionC, true)
-                question.optionD -> selectButton(binding.buttonOptionD, true)
+
+        if (isReviewMode) {
+            showReviewState(question)
+            binding.buttonOptionA.isClickable = false
+            binding.buttonOptionB.isClickable = false
+            binding.buttonOptionC.isClickable = false
+            binding.buttonOptionD.isClickable = false
+            // Show explanation card in review mode
+            binding.cardExplanation.visibility = android.view.View.VISIBLE
+            binding.textViewExplanation.text = question.explanation
+        } else {
+            // Hide explanation card during active quiz
+            binding.cardExplanation.visibility = android.view.View.GONE
+            selectedAnswers[currentQuestionIndex]?.let { selectedOption ->
+                when (selectedOption) {
+                    question.optionA -> selectButton(binding.buttonOptionA)
+                    question.optionB -> selectButton(binding.buttonOptionB)
+                    question.optionC -> selectButton(binding.buttonOptionC)
+                    question.optionD -> selectButton(binding.buttonOptionD)
+                }
             }
+            binding.buttonOptionA.isClickable = true
+            binding.buttonOptionB.isClickable = true
+            binding.buttonOptionC.isClickable = true
+            binding.buttonOptionD.isClickable = true
         }
 
         binding.buttonPrevious.visibility = if (currentQuestionIndex > 0) View.VISIBLE else View.GONE
-        binding.buttonNext.text = if (currentQuestionIndex == questions.size - 1) "Submit" else "Next"
+        binding.buttonNext.text = if (currentQuestionIndex == questions.size - 1) {
+            if (isReviewMode) "Done" else "Submit"
+        } else "Next"
+
+        updateQuestionDots()
+    }
+
+    private fun showReviewState(question: Question) {
+        val userAnswer = selectedAnswers[currentQuestionIndex]
+        val options = mapOf(
+            binding.buttonOptionA to question.optionA,
+            binding.buttonOptionB to question.optionB,
+            binding.buttonOptionC to question.optionC,
+            binding.buttonOptionD to question.optionD
+        )
+
+        options.forEach { (button, optionText) ->
+            when {
+                optionText == question.correctAnswer -> {
+                    button.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.success)
+                    button.strokeColor = ContextCompat.getColorStateList(requireContext(), R.color.success)
+                    button.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                }
+                optionText == userAnswer && userAnswer != question.correctAnswer -> {
+                    button.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.error)
+                    button.strokeColor = ContextCompat.getColorStateList(requireContext(), R.color.error)
+                    button.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                }
+                else -> {
+                    resetButton(button)
+                }
+            }
+        }
     }
 
     private fun clearSelections() {
@@ -102,12 +200,10 @@ class QuizFragment : Fragment() {
         resetButton(binding.buttonOptionD)
     }
 
-    private fun selectButton(button: com.google.android.material.button.MaterialButton, selected: Boolean) {
-        if (selected) {
-            button.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.primaryContainer)
-            button.strokeColor = ContextCompat.getColorStateList(requireContext(), R.color.primary)
-            button.setTextColor(ContextCompat.getColor(requireContext(), R.color.onPrimaryContainer))
-        }
+    private fun selectButton(button: com.google.android.material.button.MaterialButton) {
+        button.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.primaryContainer)
+        button.strokeColor = ContextCompat.getColorStateList(requireContext(), R.color.primary)
+        button.setTextColor(ContextCompat.getColor(requireContext(), R.color.onPrimaryContainer))
     }
 
     private fun resetButton(button: com.google.android.material.button.MaterialButton) {
@@ -123,11 +219,18 @@ class QuizFragment : Fragment() {
         binding.buttonOptionD.setOnClickListener { selectOption(questions[currentQuestionIndex].optionD) }
 
         binding.buttonNext.setOnClickListener {
-            if (currentQuestionIndex < questions.size - 1) {
+            if (isReviewMode) {
+                if (currentQuestionIndex < questions.size - 1) {
+                    currentQuestionIndex++
+                    displayQuestion()
+                } else {
+                    findNavController().popBackStack()
+                }
+            } else if (currentQuestionIndex < questions.size - 1) {
                 currentQuestionIndex++
                 displayQuestion()
             } else {
-                submitQuiz()
+                showSubmitConfirmation()
             }
         }
 
@@ -144,11 +247,28 @@ class QuizFragment : Fragment() {
         clearSelections()
         val question = questions[currentQuestionIndex]
         when (option) {
-            question.optionA -> selectButton(binding.buttonOptionA, true)
-            question.optionB -> selectButton(binding.buttonOptionB, true)
-            question.optionC -> selectButton(binding.buttonOptionC, true)
-            question.optionD -> selectButton(binding.buttonOptionD, true)
+            question.optionA -> selectButton(binding.buttonOptionA)
+            question.optionB -> selectButton(binding.buttonOptionB)
+            question.optionC -> selectButton(binding.buttonOptionC)
+            question.optionD -> selectButton(binding.buttonOptionD)
         }
+        updateQuestionDots()
+    }
+
+    private fun showSubmitConfirmation() {
+        val unanswered = questions.size - selectedAnswers.size
+        val message = if (unanswered > 0) {
+            "You have $unanswered unanswered question${if (unanswered > 1) "s" else ""}. Submit anyway?"
+        } else {
+            "Submit your quiz?"
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Submit Quiz")
+            .setMessage(message)
+            .setPositiveButton("Submit") { _, _ -> submitQuiz() }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun startTimer() {
@@ -159,9 +279,15 @@ class QuizFragment : Fragment() {
                 val minutes = millisUntilFinished / 60000
                 val seconds = (millisUntilFinished % 60000) / 1000
                 binding.textViewTimer.text = String.format("%02d:%02d", minutes, seconds)
+
+                if (millisUntilFinished < 60000) {
+                    binding.cardTimer.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.error))
+                }
             }
 
             override fun onFinish() {
+                binding.textViewTimer.text = "00:00"
+                Toast.makeText(requireContext(), "Time's up!", Toast.LENGTH_SHORT).show()
                 submitQuiz()
             }
         }.start()
@@ -180,17 +306,39 @@ class QuizFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.submitQuiz(args.chapterId, score, questions.size, answersJson)
-
-            val percentage = (score * 100) / questions.size
-            val message = if (percentage >= 60) {
-                getString(R.string.chapter_completed)
-            } else {
-                getString(R.string.needs_practice)
-            }
-
-            Toast.makeText(requireContext(), "$message\nScore: $score/${questions.size}", Toast.LENGTH_LONG).show()
-            findNavController().popBackStack()
+            showResults()
         }
+    }
+
+    private fun showResults() {
+        val percentage = (score * 100) / questions.size
+        val passed = percentage >= 60
+        val title = if (passed) "Chapter Completed!" else "Needs Practice"
+        val message = "Score: $score/${questions.size} ($percentage%)\n\n" +
+                "Time: ${formatTime(quizDuration - timeRemaining)}\n" +
+                "Correct: $score\n" +
+                "Incorrect: ${questions.size - score}"
+
+        AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Review Answers") { _, _ ->
+                isReviewMode = true
+                currentQuestionIndex = 0
+                binding.buttonNext.text = "Next"
+                displayQuestion()
+            }
+            .setNegativeButton("Done") { _, _ ->
+                findNavController().popBackStack()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun formatTime(millis: Long): String {
+        val minutes = millis / 60000
+        val seconds = (millis % 60000) / 1000
+        return String.format("%02d:%02d", minutes, seconds)
     }
 
     override fun onDestroyView() {

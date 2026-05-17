@@ -8,5 +8,6 @@ data class Subject(
     @PrimaryKey val id: Int,
     val name: String,
     val icon: Int = 0,
-    val progress: Int = 0
+    val progress: Int = 0,
+    val totalChapters: Int = 0
 )
